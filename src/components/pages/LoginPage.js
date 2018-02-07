@@ -1,10 +1,20 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
 import LoginForm from "../forms/LoginForm";
+import { login } from "../../actions/auth";
 
 class LoginPage extends React.Component {
-  submit = data => {
-    console.log(data);
-  };
+  submit(data) {
+    this.props.login(data).then(() => this.props.history.push("/"));
+  }
+
+  constructor(props) {
+    super(props);
+    this.submit = this.submit.bind(this);
+  }
 
   render() {
     return (
@@ -16,4 +26,21 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+LoginPage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired,
+  login: PropTypes.func.isRequired
+};
+
+// This IS IMPORTANT stuff!
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ login: login }, dispatch);
+}
+
+// First parameter to connect is: mapStateToProps.
+// In our case we do not need anything from store so
+// it is null.
+// Second one is mapDispatchToProps - a set of functions we are going to dispath.
+// In our case it is only 'login' function.
+export default connect(null, mapDispatchToProps)(LoginPage);
