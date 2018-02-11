@@ -8,7 +8,9 @@ export const userLoggedIn = user => ({
 
 // Thunk action is the function that returns another function
 export const login = credentials => dispatch =>
-  api.user.login(credentials).then(user => dispatch(userLoggedIn(user)));
+  api.user.login(credentials).then(user => {
+    dispatch(userLoggedIn(user));
+  });
 
 // () =>
 //    foobar

@@ -7,13 +7,13 @@ import LoginForm from "../forms/LoginForm";
 import { login } from "../../actions/auth";
 
 class LoginPage extends React.Component {
-  submit(data) {
-    this.props.login(data).then(() => this.props.history.push("/"));
-  }
-
   constructor(props) {
     super(props);
     this.submit = this.submit.bind(this);
+  }
+
+  submit(data) {
+    return this.props.login(data).then(() => this.props.history.push("/"));
   }
 
   render() {
@@ -35,8 +35,12 @@ LoginPage.propTypes = {
 
 // This IS IMPORTANT stuff!
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ login: login }, dispatch);
+  return bindActionCreators({ login }, dispatch);
 }
+
+// function mapStateToProps(state) {
+//   return {};
+// }
 
 // First parameter to connect is: mapStateToProps.
 // In our case we do not need anything from store so
